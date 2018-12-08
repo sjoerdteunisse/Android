@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android</string>
+    <string name="Register">Register</string>
+    <string name="Login">Login</string>
+    <string name="RegisterMessage">Or click here to create an account</string>
+</resources>

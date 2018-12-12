@@ -4,4 +4,5 @@
     <string name="Register">Register</string>
     <string name="Login">Login</string>
     <string name="RegisterMessage">Or click here to create an account</string>
+    <string name="Welcome">Welcome to the app</string>
 </resources>

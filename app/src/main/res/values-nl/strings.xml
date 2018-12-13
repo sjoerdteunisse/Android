@@ -3,6 +3,6 @@
     <string name="app_name">Android</string>
     <string name="Register">Registreren</string>
     <string name="Login">Inloggen</string>
-    <string name="RegisterMessage">Of klik hier om een account aan te maken</string>
+    <string name="RegisterMessage">Of klik op registreren om een account aan te maken</string>
     <string name="Welcome">Welkom bij de app</string>
 </resources>

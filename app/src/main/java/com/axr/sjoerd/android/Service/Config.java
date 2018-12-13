@@ -10,5 +10,9 @@ public class Config {
     public static final String LOCAL_ENC_KEY = "SuperSecureKey";
     public static final String BASE_API = "/api";
     public static final String URL_LOGIN = BASE_SERVICE_URL +  BASE_API + "/user/login";
-    public static final String URL_REGISTER = BASE_SERVICE_URL + BASE_API + "/user/login";
+    public static final String URL_REGISTER = BASE_SERVICE_URL + BASE_API + "/user/register";
+
+
+    public static final String TOKEN_NAME = "TOKEN";
+    public static final String NO_TOKEN = "NOTOKEN";
 }

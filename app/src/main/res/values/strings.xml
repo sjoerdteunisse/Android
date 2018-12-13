@@ -2,6 +2,6 @@
     <string name="app_name">Android</string>
     <string name="Register">register</string>
     <string name="Login">Login</string>
-    <string name="RegisterMessage">Or click here to register</string>
+    <string name="RegisterMessage">Or click on register to create an account</string>
     <string name="Welcome">Welcome to the app</string>
 </resources>

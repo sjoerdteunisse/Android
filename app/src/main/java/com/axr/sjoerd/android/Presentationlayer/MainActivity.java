@@ -15,12 +15,12 @@ import com.axr.sjoerd.android.Service.ApiRequest;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AnimationDrawable animationDrawable;
     private TextView usernameField;
     private TextView passwordField;
     private Button   loginButton;
     private Button   registerButton;
     private TextView statusMessage;
+    private AnimationDrawable animationDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

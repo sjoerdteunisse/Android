@@ -110,24 +110,25 @@ public class ApiRequest {
         String statusCode = String.valueOf(error.networkResponse.statusCode);
         if (error.networkResponse.data != null) {
             try {
+
                 body = new String(error.networkResponse.data, "UTF-8");
                 JSONObject obj = new JSONObject(body);
-
-                TextView txtView = (TextView) ((Activity) context).findViewById(R.id.statusMessage);
-
                 String errorBody = obj.getString("errorName");
-
-                if (txtView != null) {
-                    if (errorBody.startsWith("Duplicate entry"))
-                        txtView.setText("Account already exists");
-                    else {
-                        txtView.setText(errorBody);
-                    }
-                }
-
+                setStatusMessage(errorBody);
 
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void setStatusMessage(String s){
+        TextView txtView = (TextView) ((Activity) context).findViewById(R.id.statusMessage);
+        if (txtView != null) {
+            if (s.startsWith("Duplicate entry"))
+                txtView.setText("Account already exists");
+            else {
+                txtView.setText(s);
             }
         }
     }

@@ -27,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView lastnameField;
     private TextView emailField;
     private TextView passwordField;
+    private TextView statusMessage;
     private CheckBox confirmAccount;
 
     private Button  finalizeRegisterButton;
@@ -45,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordField);
         confirmAccount = findViewById(R.id.confirmAgree);
         finalizeRegisterButton = findViewById(R.id.finalizeRegister);
+        statusMessage = findViewById(R.id.statusMessage);
 
 
         confirmAccount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -60,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(!isValidEmail(emailField.getText())) {
-                    Toast.makeText(RegisterActivity.this, "Email adress invalid", Toast.LENGTH_LONG).show();
+                    statusMessage.setText("Email address invalid");
                     return;
                 }
 
@@ -72,8 +74,8 @@ public class RegisterActivity extends AppCompatActivity {
                 ApiRequest apiRequest = new ApiRequest(RegisterActivity.this);
                 apiRequest.register(registerAccount);
 
-//                Log.d("Encryption run", "onClick: ENC" + LocalEncryption.encrypt(registerAccount.getPassword()));
-//                Toast.makeText(RegisterActivity.this, LocalEncryption.encrypt("TESTTTT"), Toast.LENGTH_LONG).show();
+                Log.i("Encryption run", "onClick: ENC" + LocalEncryption.encrypt(registerAccount.getPassword()));
+                Toast.makeText(RegisterActivity.this, LocalEncryption.encrypt("TESTTTT"), Toast.LENGTH_LONG).show();
             }
         });
 

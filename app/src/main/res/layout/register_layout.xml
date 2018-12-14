@@ -64,7 +64,7 @@
         android:layout_width="287dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
@@ -72,9 +72,9 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/lastnameField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeMessage"
+        app:layout_constraintTop_toBottomOf="@+id/statusMessage"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
@@ -115,8 +115,23 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="I agree, that my details will be stored to make use of the app"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+
+    <TextView
+        android:id="@+id/statusMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/firstnameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeMessage" />
 
 </android.support.constraint.ConstraintLayout>

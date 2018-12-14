@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView passwordField;
     private Button   loginButton;
     private Button   registerButton;
+    private TextView statusMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +33,16 @@ public class MainActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordField);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
+        statusMessage = findViewById(R.id.statusMessage);
 
         Log.i("Before", "onClick: ");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Going", "onClick: ");
                 ApiRequest a = new ApiRequest(MainActivity.this);
                 a.login(usernameField.getText().toString(), passwordField.getText().toString());
+
             }
         });
 

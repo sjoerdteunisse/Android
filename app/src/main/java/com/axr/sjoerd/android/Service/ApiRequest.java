@@ -1,9 +1,11 @@
 package com.axr.sjoerd.android.Service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -11,14 +13,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.axr.sjoerd.android.Domainlayer.RegisterAccount;
+import com.axr.sjoerd.android.R;
 
 import org.json.JSONObject;
 
 public class ApiRequest {
 
-    public final String TAG = this.getClass().getSimpleName();
     private Context context;
     private SharedPreferences preferences;
+    private final String TAG = this.getClass().getSimpleName();
 
     public ApiRequest(Context context) {
         this.context = context;
@@ -27,12 +30,13 @@ public class ApiRequest {
 
     public void register(RegisterAccount registeringAccount) {
 
-        Log.i(TAG, "login");
+        Log.i(TAG, "Register voley request");
 
-        String body = "{\"email\":\"" + registeringAccount.getEmail() + "\"," +
-                "\"password\":\"" + registeringAccount.getPassword() + "\"," +
-                "\"firstname\":\"" + registeringAccount.getFirstName() + "\"," +
-                "\"lastname\":\"" + registeringAccount.getLastName() + "\"}";
+        String body =
+                "{\"email\":\"" + registeringAccount.getEmail() + "\"," +
+                        "\"password\":\"" + registeringAccount.getPassword() + "\"," +
+                        "\"firstname\":\"" + registeringAccount.getFirstName() + "\"," +
+                        "\"lastname\":\"" + registeringAccount.getLastName() + "\"}";
 
         try {
             JSONObject jsonBody = new JSONObject(body);
@@ -49,7 +53,7 @@ public class ApiRequest {
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                             String name = preferences.getString(Config.TOKEN_NAME, Config.NO_TOKEN);
 
-                            Log.i(TAG, "onResponse: TOKEN = " + name);
+                            Log.i(TAG, "Register token =  " + name);
                         }
                     },
                     new Response.ErrorListener() {
@@ -62,7 +66,7 @@ public class ApiRequest {
             VolleyRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
 
         } catch (Exception e) {
-            Log.i(TAG, "login: " + e);
+            Log.i(TAG, "register failed on: " + e);
         }
     }
 
@@ -109,8 +113,18 @@ public class ApiRequest {
                 body = new String(error.networkResponse.data, "UTF-8");
                 JSONObject obj = new JSONObject(body);
 
+                TextView txtView = (TextView) ((Activity) context).findViewById(R.id.statusMessage);
+
                 String errorBody = obj.getString("errorName");
-                Toast.makeText(context, errorBody, Toast.LENGTH_LONG).show();
+
+                if (txtView != null) {
+                    if (errorBody.startsWith("Duplicate entry"))
+                        txtView.setText("Account already exists");
+                    else {
+                        txtView.setText(errorBody);
+                    }
+                }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -126,8 +140,7 @@ public class ApiRequest {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(Config.TOKEN_NAME, token);
             editor.apply();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.axr.sjoerd.android.Domainlayer.RegisterAccount;
@@ -54,6 +55,7 @@ public class ApiRequest {
                             String name = preferences.getString(Config.TOKEN_NAME, Config.NO_TOKEN);
 
                             Log.i(TAG, "Register token =  " + name);
+                            setStatusMessage("Account registered successfully!");
                         }
                     },
                     new Response.ErrorListener() {
@@ -106,8 +108,19 @@ public class ApiRequest {
     }
 
     private void HandleApiError(VolleyError error) {
+
+        if(error == null)
+            return;
+
+        //Timout
+        if (error.getClass().equals(TimeoutError.class)) {
+            setStatusMessage("Server timeout occurred, try again later.");
+            return;
+        }
+
         String body;
         String statusCode = String.valueOf(error.networkResponse.statusCode);
+
         if (error.networkResponse.data != null) {
             try {
 
@@ -122,21 +135,21 @@ public class ApiRequest {
         }
     }
 
-    private void setStatusMessage(String s){
+    private void setStatusMessage(String statusMessage){
         TextView txtView = (TextView) ((Activity) context).findViewById(R.id.statusMessage);
         if (txtView != null) {
-            if (s.startsWith("Duplicate entry"))
+            if (statusMessage.startsWith("Duplicate entry"))
                 txtView.setText("Account already exists");
             else {
-                txtView.setText(s);
+                txtView.setText(statusMessage);
             }
         }
     }
 
-    private void storeJWTToken(JSONObject response) {
+    private void storeJWTToken(JSONObject jsonObject) {
         try {
-            JSONObject c = new JSONObject(response.toString());
-            String token = c.getString("token");
+            JSONObject tokenObject = new JSONObject(jsonObject.toString());
+            String token = tokenObject.getString("token");
 
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(Config.TOKEN_NAME, token);

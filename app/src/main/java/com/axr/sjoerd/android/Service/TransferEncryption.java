@@ -1,26 +1,40 @@
 package com.axr.sjoerd.android.Service;
 
+import android.util.Base64;
 import android.util.Log;
 
 import java.security.Key;
+import java.security.MessageDigest;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class LocalEncryption {
+public class TransferEncryption {
 
     private static final byte[] keyValue =
             Config.LOCAL_ENC_KEY.getBytes();
 
 
-    public static String encrypt(String cleartext){
+    public static String encrypt(String cleartext) {
         try {
-            byte[] rawKey = getRawKey();
-            byte[] result = encrypt(rawKey, cleartext.getBytes());
-            return toHex(result);
-        }
-        catch (Exception e){
+            byte[] input = cleartext.toString().getBytes("utf-8");
+
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] thedigest = md.digest(keyValue);
+            SecretKeySpec skc = new SecretKeySpec(thedigest, "AES/ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, skc);
+
+            byte[] cipherText = new byte[cipher.getOutputSize(input.length)];
+            int ctLength = cipher.update(input, 0, input.length, cipherText, 0);
+            ctLength += cipher.doFinal(cipherText, ctLength);
+
+            String finalBase64String = Base64.encodeToString(cipherText, Base64.DEFAULT);
+
+            return finalBase64String;
+
+        } catch (Exception e) {
             Log.d("Encryption failed on ", "encrypt: " + e.getMessage());
         }
         return "";

@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.axr.sjoerd.android.Domainlayer.RegisterAccount;
 import com.axr.sjoerd.android.R;
 import com.axr.sjoerd.android.Service.ApiRequest;
-import com.axr.sjoerd.android.Service.LocalEncryption;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -73,9 +72,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 ApiRequest apiRequest = new ApiRequest(RegisterActivity.this);
                 apiRequest.register(registerAccount);
-
-                Log.i("Encryption run", "onClick: ENC" + LocalEncryption.encrypt(registerAccount.getPassword()));
-                Toast.makeText(RegisterActivity.this, LocalEncryption.encrypt("TESTTTT"), Toast.LENGTH_LONG).show();
             }
         });
 

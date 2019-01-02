@@ -1,5 +1,6 @@
 package com.axr.sjoerd.android.Presentationlayer;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -13,11 +14,12 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.axr.sjoerd.android.Applicationlayer.AuthorizationCallback;
 import com.axr.sjoerd.android.Domainlayer.RegisterAccount;
 import com.axr.sjoerd.android.R;
 import com.axr.sjoerd.android.Service.ApiRequest;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements AuthorizationCallback {
 
 
     private AnimationDrawable animationDrawable;
@@ -85,4 +87,9 @@ public class RegisterActivity extends AppCompatActivity {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
+    @Override
+    public void HandleResponse() {
+        Intent listViewIntent = new Intent(RegisterActivity.this, ListView.class);
+        startActivity(listViewIntent);
+    }
 }

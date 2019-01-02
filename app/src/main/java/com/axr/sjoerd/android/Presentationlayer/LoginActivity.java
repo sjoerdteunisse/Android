@@ -1,7 +1,9 @@
 package com.axr.sjoerd.android.Presentationlayer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.axr.sjoerd.android.Applicationlayer.AuthorizationCallback;
 import com.axr.sjoerd.android.R;
 import com.axr.sjoerd.android.Service.ApiRequest;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements AuthorizationCallback {
 
     private TextView usernameField;
     private TextView passwordField;
@@ -26,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
+        CheckToken();
 
         ConstraintLayout c = findViewById(R.id.mainActivityLayout);
 
@@ -40,17 +48,16 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiRequest a = new ApiRequest(MainActivity.this);
-                a.login(usernameField.getText().toString(), passwordField.getText().toString());
-
+                ApiRequest api = new ApiRequest(LoginActivity.this);
+                 api.login(usernameField.getText().toString(), passwordField.getText().toString());
             }
         });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
             }
         });
 
@@ -60,8 +67,19 @@ public class MainActivity extends AppCompatActivity {
         animationDrawable.start();
     }
 
+    private void CheckToken() {
+        ApiRequest apiRequest = new ApiRequest(this);
+        apiRequest.me();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void HandleResponse() {
+        Intent listViewIntent = new Intent(LoginActivity.this, ListView.class);
+        startActivity(listViewIntent);
     }
 }

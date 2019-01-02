@@ -6,17 +6,21 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.axr.sjoerd.android.Applicationlayer.AuthorizationCallback;
 import com.axr.sjoerd.android.Domainlayer.RegisterAccount;
 import com.axr.sjoerd.android.R;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApiRequest {
 
@@ -55,7 +59,9 @@ public class ApiRequest {
                             String name = preferences.getString(Config.TOKEN_NAME, Config.NO_TOKEN);
 
                             Log.i(TAG, "Register token =  " + name);
+
                             setStatusMessage("Account registered successfully!");
+                            ((AuthorizationCallback)context).HandleResponse();
                         }
                     },
                     new Response.ErrorListener() {
@@ -90,6 +96,7 @@ public class ApiRequest {
                             Log.i(TAG, response.toString());
                             storeJWTToken(response);
 
+                            ((AuthorizationCallback)context).HandleResponse();
 
                         }
                     },
@@ -104,6 +111,57 @@ public class ApiRequest {
 
         } catch (Exception e) {
             Log.i(TAG, "login: " + e);
+        }
+    }
+
+    public void me(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        final String storedToken = preferences.getString(Config.TOKEN_NAME, null);
+
+        //ERROR ON IS EMPTY.
+        if(storedToken == null)
+        {
+            return;
+        }
+
+        if(!storedToken.isEmpty()){
+
+            Log.i(TAG, "me");
+
+            try {
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+                        Request.Method.GET,
+                        Config.URL_ME,
+                        null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.i(TAG, response.toString());
+                                storeJWTToken(response);
+
+                                ((AuthorizationCallback)context).HandleResponse();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                HandleApiError(error);
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap headers = new HashMap();
+                        headers.put("x-access-token", storedToken);
+                        return headers;
+                    }
+                };
+
+                VolleyRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
+
+            } catch (Exception e) {
+                Log.i(TAG, "login: " + e);
+            }
         }
     }
 

@@ -11,17 +11,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <!--<activity android:name=".Applicationlayer.MainActivity">-->
-        <activity android:name=".Presentationlayer.MainActivity">
+        >
+        <!--<activity android:name=".Applicationlayer.LoginActivity">-->
+        <activity android:name=".Presentationlayer.LoginActivity" android:theme="@style/HiddenTopLayer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Presentationlayer.RegisterActivity">
-        </activity>
+        <activity android:name=".Presentationlayer.RegisterActivity" android:theme="@style/HiddenTopLayer" ></activity>
+        <activity android:name=".Presentationlayer.ListView" android:theme="@style/AppTheme"></activity>
+        <activity android:name=".Presentationlayer.DetailView" android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
